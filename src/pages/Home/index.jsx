@@ -1,21 +1,18 @@
+import { useEffect, useLayoutEffect } from 'react'
 import './style.css'
 import Trash from '../../assets/trash.svg'
+import api from '../../services/api'
 
 function Home() {
+  let users = []
 
-  const users = [{
-    id: '238y28',
-    name: 'isaias',
-    age: 25,
-    email: 'isaias@email.com'
-  },
-  {
-    id: '23t426',
-    name: 'lucas',
-    age: 27,
-    email: 'lucas@email.com'
+  async function getUsers(){
+    users = await api.get('/usuarios')
   }
-  ]
+
+  useEffect(() => {
+    getUsers()
+  }, [])
 
 
   return (
@@ -23,22 +20,22 @@ function Home() {
       <div className='container'>
         <form>
           <h1>Cadastro de Usuários</h1>
-          <input name='nome' type="text" />
-          <input name='idade' type="number" />
-          <input name='email' type="email" />
+          <input placeholder='Nome' name='nome' type="text" />
+          <input placeholder='Idade' name='idade' type="number" />
+          <input placeholder='E-mail' name='email' type="email" />
           <button type='button'>Cadastrar</button>
         </form>
 
         {users.map((user) =>
-          <div key={user.id}>
-            <div>
-              <p>Nome: {user.name}</p>
-              <p>Idade: {user.age}</p>
-              <p>Email: {user.email}</p>
-            </div>
-            <button>
-              <img src={Trash} />
-            </button>
+          <div key={user.id} className='card'>
+              <div>
+                <p>Nome:  <span>{user.name}</span></p>
+                <p>Idade: <span>{user.age}</span></p>
+                <p>Email: <span>{user.email}</span></p>
+              </div>
+              <button>
+                <img src={Trash} />
+              </button>
           </div>
 
         )}
